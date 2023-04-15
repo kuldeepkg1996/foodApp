@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const PostFood = () => {
+const AddFood = () => {
   const [foodName, setFoodName] = useState("");
   const [foodType, setFoodType] = useState("");
   const [maxDeliveryTime, setMaxDeliveryTime] = useState("");
@@ -44,4 +44,4 @@ const PostFood = () => {
   );
 };
 
-export default PostFood;
+export default AddFood;
