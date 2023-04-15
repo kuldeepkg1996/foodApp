@@ -8,6 +8,7 @@ import DisplayFood from './components/DisplayFood';
 
 const App = () => {
   return (
+    <h1>Food App</h1>
     <Router>
       <NavBar />
       <Routes>
