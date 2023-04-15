@@ -24,6 +24,8 @@ const PostFood = () => {
         Food Name:
         <input type="text" value={foodName} onChange={(e) => setFoodName(e.target.value)} />
       </label>
+      <br/>
+      <br/>
       <label>
         Food Type:
         <select value={foodType} onChange={(e) => setFoodType(e.target.value)}>
@@ -35,10 +37,14 @@ const PostFood = () => {
           <option value="Desserts">Desserts</option>
         </select>
       </label>
+      <br/>
+      <br/>
       <label>
         Max Delivery Time in Minutes:
         <input type="number" value={maxDeliveryTime} onChange={(e) => setMaxDeliveryTime(e.target.value)} />
       </label>
+      <br/>
+      <br/>
       <button type="submit">Submit</button>
     </form>
   );
