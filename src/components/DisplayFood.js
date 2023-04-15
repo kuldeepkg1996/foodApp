@@ -56,6 +56,8 @@ const DisplayFood = () => {
             <option value="Desserts">Desserts</option>
           </select>
         </label>
+        <br/>
+        <br/>
         <label>
           Filter by Max Delivery Time:
           <input
