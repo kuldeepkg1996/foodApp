@@ -1,76 +1,90 @@
 import React, { useState, useEffect } from "react";
 
-const DisplayFoods = () => {
-  const [foods, setFoods] = useState([]);
-  const [filteredFoods, setFilteredFoods] = useState([]);
-  const [filterType, setFilterType] = useState("");
-  const [filterDeliveryTime, setFilterDeliveryTime] = useState("");
+const DisplayFood = () => {
+  const [foodList, setFoodList] = useState([]);
+  const [filteredFoodList, setFilteredFoodList] = useState([]);
+  const [foodTypeFilter, setFoodTypeFilter] = useState("");
+  const [maxDeliveryTimeFilter, setMaxDeliveryTimeFilter] = useState("");
 
   useEffect(() => {
-    const existingFoods = JSON.parse(localStorage.getItem("foods")) || [];
-    setFoods(existingFoods);
-    setFilteredFoods(existingFoods);
-  }, []);
-
-  useEffect(() => {
-    let newFilteredFoods = foods;
-
-    if (filterType !== "") {
-      newFilteredFoods = newFilteredFoods.filter((food) => food.type === filterType);
+    const storedData = localStorage.getItem("foodData");
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+        setFoodList(parsedData);
+      } catch (error) {
+        console.error("Error parsing stored data:", error);
+      }
     }
+  }, []);
+  
 
-    if (filterDeliveryTime !== "") {
-      newFilteredFoods = newFilteredFoods.filter(
-        (food) => food.deliveryTime <= filterDeliveryTime
-     
-        );
+  useEffect(() => {
+    let filteredList = [...foodList];
+    if (foodTypeFilter !== "") {
+      filteredList = filteredList.filter(
+        (item) => item.foodType === foodTypeFilter
+      );
+    }
+    if (maxDeliveryTimeFilter !== "") {
+      filteredList = filteredList.filter(
+        (item) => item.maxDeliveryTime <= maxDeliveryTimeFilter
+      );
+    }
+    setFilteredFoodList(filteredList);
+  }, [foodList, foodTypeFilter, maxDeliveryTimeFilter]);
 
-        setFilteredFoods(newFilteredFoods);
-    }, [foods, filterType, filterDeliveryTime]);
+  const handleFoodTypeFilter = (event) => {
+    setFoodTypeFilter(event.target.value);
+  };
 
-    const handleTypeFilter = (e) => {
-    setFilterType(e.target.value);
-    };
-    
-    const handleDeliveryTimeFilter = (e) => {
-    setFilterDeliveryTime(e.target.value);
-    };
-    
-    return (
-    <div>
-    <h2>Food List</h2>
-    <div>
-    <label>
-    Filter by Type:
-    <select value={filterType} onChange={handleTypeFilter}>
-    <option value="">All</option>
-    <option value="Delicious Food">Delicious Food</option>
-    <option value="Nutritious Food">Nutritious Food</option>
-    <option value="Fast Food">Fast Food</option>
-    <option value="Beverages">Beverages</option>
-    <option value="Desserts">Desserts</option>
-    </select>
-    </label>
-    <label>
-    Filter by Delivery Time (in minutes):
-    <input
-             type="number"
-             value={filterDeliveryTime}
-             onChange={handleDeliveryTimeFilter}
-           />
-    </label>
-    </div>
-    <ul>
-    {filteredFoods.map((food) => (
-    <li key={food.id}>
-    <p>Name: {food.name}</p>
-    <p>Type: {food.type}</p>
-    <p>Max Delivery Time: {food.deliveryTime} minutes</p>
-    </li>
-    ))}
-    </ul>
-    </div>
-    );
-    };
-    
-    export default DisplayFoods;
+  const handleMaxDeliveryTimeFilter = (event) => {
+    setMaxDeliveryTimeFilter(event.target.value);
+  };
+
+  return (
+    <>
+      <div>
+        <label>
+          Filter by Food Type:
+          <select value={foodTypeFilter} onChange={handleFoodTypeFilter}>
+            <option value="">All</option>
+            <option value="Delicious Food">Delicious Food</option>
+            <option value="Nutritious Food">Nutritious Food</option>
+            <option value="Fast Food">Fast Food</option>
+            <option value="Beverages">Beverages</option>
+            <option value="Desserts">Desserts</option>
+          </select>
+        </label>
+        <label>
+          Filter by Max Delivery Time:
+          <input
+            type="number"
+            value={maxDeliveryTimeFilter}
+            onChange={handleMaxDeliveryTimeFilter}
+          />
+        </label>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Food Name</th>
+            <th>Food Type</th>
+            <th>Max Delivery Time (minutes)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredFoodList.map((foodItem, index) => (
+            <tr key={index}>
+              <td>{foodItem.foodName}</td>
+              <td>{foodItem.foodType}</td>
+              <td>{foodItem.maxDeliveryTime}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  );
+};
+
+export default DisplayFood;
