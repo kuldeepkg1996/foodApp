@@ -2,24 +2,19 @@ import React, { useState } from "react";
 
 const PostFood = () => {
   const [foodName, setFoodName] = useState("");
-  const [foodType, setFoodType] = useState("Delicious Food");
+  const [foodType, setFoodType] = useState("");
   const [maxDeliveryTime, setMaxDeliveryTime] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const newFood = {
-      id: Date.now(),
-      name: foodName,
-      type: foodType,
-      deliveryTime: maxDeliveryTime,
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const foodItem = {
+      foodName,
+      foodType,
+      maxDeliveryTime
     };
-
-    const existingFoods = JSON.parse(localStorage.getItem("foods")) || [];
-    localStorage.setItem("foods", JSON.stringify([...existingFoods, newFood]));
-
+    localStorage.setItem(foodName, JSON.stringify(foodItem));
     setFoodName("");
-    setFoodType("Delicious Food");
+    setFoodType("");
     setMaxDeliveryTime("");
   };
 
@@ -27,15 +22,12 @@ const PostFood = () => {
     <form onSubmit={handleSubmit}>
       <label>
         Food Name:
-        <input
-          type="text"
-          value={foodName}
-          onChange={(e) => setFoodName(e.target.value)}
-        />
+        <input type="text" value={foodName} onChange={(e) => setFoodName(e.target.value)} />
       </label>
       <label>
         Food Type:
         <select value={foodType} onChange={(e) => setFoodType(e.target.value)}>
+          <option value="">Select Food Type</option>
           <option value="Delicious Food">Delicious Food</option>
           <option value="Nutritious Food">Nutritious Food</option>
           <option value="Fast Food">Fast Food</option>
@@ -44,14 +36,10 @@ const PostFood = () => {
         </select>
       </label>
       <label>
-        Max Delivery Time (in minutes):
-        <input
-          type="number"
-          value={maxDeliveryTime}
-          onChange={(e) => setMaxDeliveryTime(e.target.value)}
-        />
+        Max Delivery Time in Minutes:
+        <input type="number" value={maxDeliveryTime} onChange={(e) => setMaxDeliveryTime(e.target.value)} />
       </label>
-      <button type="submit">Post Food</button>
+      <button type="submit">Submit</button>
     </form>
   );
 };
